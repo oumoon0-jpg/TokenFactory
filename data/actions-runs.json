@@ -1,5 +1,252 @@
 [
   {
+    "id": "2026-11-25T08:02:12.310Z",
+    "startedAt": "2026-11-25T08:02:12.310Z",
+    "finishedAt": "2026-11-25T08:02:21.899Z",
+    "status": "partial",
+    "sources": [
+      {
+        "source": "minimax-official",
+        "name": "MiniMax 开放平台 · 人民币按量价",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:12.310Z",
+        "count": 11
+      },
+      {
+        "source": "gongji",
+        "name": "共绩算力",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:12.346Z",
+        "count": 30
+      },
+      {
+        "source": "apetops",
+        "name": "猿界算力",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:12.347Z",
+        "count": 14
+      },
+      {
+        "source": "qxlc-659",
+        "name": "全芯联储 · 5090八卡整机",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:12.348Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-655",
+        "name": "全芯联储 · 5090单卡",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:12.349Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-658",
+        "name": "全芯联储 · H200整机",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.239Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-667",
+        "name": "全芯联储 · B300整机",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.245Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-120",
+        "name": "全芯联储 · PRO6000",
+        "status": "failed",
+        "observedAt": "2026-11-25T08:02:14.361Z",
+        "count": 0,
+        "error": "采购价格面议或未公开数字"
+      },
+      {
+        "source": "qxlc-628",
+        "name": "全芯联储 · PRO6000服务器版",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.527Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-627",
+        "name": "全芯联储 · H200 NVL单卡",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.542Z",
+        "count": 1
+      },
+      {
+        "source": "qxlc-556",
+        "name": "全芯联储 · H100拆机单卡",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.823Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-cd81793f-2ef3-492c-b6dc-a017805ea591",
+        "name": "宽泛采销 · A100 40GB",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:14.849Z",
+        "count": 2
+      },
+      {
+        "source": "qudao-b6c9bdd3-80ca-4645-a3b0-871f1e9d1088",
+        "name": "宽泛采销 · A100 80GB",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:15.081Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-000044eb-6391-4888-9b27-b255005cf468",
+        "name": "宽泛采销 · RTX 4090 涡轮",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:15.417Z",
+        "count": 2
+      },
+      {
+        "source": "qudao-2ffd0536-b7ab-4890-8cb0-fa9d1d51b8a7",
+        "name": "宽泛采销 · RTX 5090 涡轮",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:15.524Z",
+        "count": 2
+      },
+      {
+        "source": "qudao-d2881a24-f728-4724-b56e-e19527ea8bcc",
+        "name": "宽泛采销 · RTX 5090 风扇",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.150Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-36157b64-b365-44ee-9455-1f5722e2e0ac",
+        "name": "宽泛采销 · RTX 5090 D V2",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.428Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-dbf74adf-f69a-498b-915a-732c8b580eb0",
+        "name": "宽泛采销 · RTX PRO 6000 D",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.453Z",
+        "count": 2
+      },
+      {
+        "source": "qudao-3edb8573-502e-4d38-bab8-be7ea3d8f447",
+        "name": "宽泛采销 · L20",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.556Z",
+        "count": 2
+      },
+      {
+        "source": "qudao-aec92c99-69da-4376-8a04-c33a12d6f4b1",
+        "name": "宽泛采销 · RTX PRO 6000 Max-Q",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.728Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-7c52c6da-5b4f-4113-976e-73220f631876",
+        "name": "宽泛采销 · RTX PRO 6000 工作站",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.743Z",
+        "count": 1
+      },
+      {
+        "source": "qudao-71e95311-6d75-4ae5-a529-4e8b3e2eacb1",
+        "name": "宽泛采销 · RTX PRO 6000 服务器",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.812Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-1365",
+        "name": "算力之光 · L40S 全新含税",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.844Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-280",
+        "name": "算力之光 · L40",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:16.915Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-1027",
+        "name": "算力之光 · A100 80GB",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:17.077Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-1360",
+        "name": "算力之光 · H100 PCIe 全新含税",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:17.094Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-1743",
+        "name": "算力之光 · H200 NVL · 合肥源算",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:17.096Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-2045",
+        "name": "算力之光 · H200 NVL · 奥昇",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.050Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-1003",
+        "name": "算力之光 · H100 拆组八卡模组",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.273Z",
+        "count": 1
+      },
+      {
+        "source": "cplight-2556",
+        "name": "算力之光 · Dell B300 八卡整机",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.398Z",
+        "count": 1
+      },
+      {
+        "source": "aiswr-purchase",
+        "name": "北京数位人 · 整机采购",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.414Z",
+        "count": 2
+      },
+      {
+        "source": "zol-a800",
+        "name": "成都强川 / ZOL · A800历史挂牌",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.445Z",
+        "count": 1
+      },
+      {
+        "source": "jd-5090d",
+        "name": "京东公开商品页 · RTX 5090 D 32GB",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.770Z",
+        "count": 1
+      },
+      {
+        "source": "aliyun",
+        "name": "阿里云百炼 · MiniMax官方供给",
+        "status": "success",
+        "observedAt": "2026-11-25T08:02:19.842Z",
+        "count": 1
+      }
+    ]
+  },
+  {
     "id": "2026-11-25T07:52:32.111Z",
     "startedAt": "2026-11-25T07:52:32.111Z",
     "finishedAt": "2026-11-25T07:52:48.961Z",
