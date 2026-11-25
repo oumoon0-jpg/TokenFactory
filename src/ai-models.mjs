@@ -1,4 +1,4 @@
-import {catalog,preset} from './catalog.mjs';
+import {catalog,preset,defaultState} from './catalog.mjs';
 
 export const modelPricingUrl='https://platform.minimaxi.com/docs/pricing/overview.md';
 export const videoBenchmarkUrl='https://github.com/shaozheng0503/minimax-h3-turbo';
@@ -15,6 +15,7 @@ export const aiModel=id=>aiModels.find(m=>m.id===id)||aiModels[0];
 export function modelDefaults(id,spec){const m=aiModel(id),p=m.prices[spec]||m.prices[m.specs[0][0]];return m.kind==='text'?{inputPrice:p[0],outputPrice:p[1],cachePrice:p[2],cache:0,saleDiscount:0}:{videoPrice:.2,videoInputPrice:.2,imagePrice:p[2],freeImages:m.freeImages,videoInputSeconds:0,referenceImages:0,saleDiscount:0,refund:0};}
 // Multipliers are deliberately budget assumptions, not a GPU performance ranking.
 const videoSpeed={'rtx5090-32':1,'rtx4090-24':.65,'rtx5090d-32':.8,'rtx5090dv2-24':.7,'rtxpro6000-96':1.15,'rtxpro6000d-84':.95,'l20-48':.4,'l40s-48':.55,'l40-48':.5,'a100-40':.5,'a100-80':.55,'a800-80':.5,'h20-96':.5,'h20-141':.6,'h800-80':.85,'h100-80':.9,'h200-141':1.1,'b200-180':1.6,'b300-288':1.9};
+const matchesDefaultVideo=s=>['aiModel','model','modelSpec','videoEngine','videoDuration'].every(key=>s[key]===defaultState[key]);
 export function modelPreset(s){
  const m=aiModel(s.aiModel),g=catalog.find(g=>g.id===s.model)||catalog[0],base=preset(g.id,s.gpu,s.scenario);
  if(m.kind==='text'){
@@ -27,10 +28,11 @@ export function modelPreset(s){
  const anchors=[5,10,15];let seconds;
  if(duration<=5)seconds=table[0]*duration/5;else if(duration>=15)seconds=table[2]*duration/15;else{const i=duration<=10?0:1;seconds=table[i]+(table[i+1]-table[i])*(duration-anchors[i])/5;}
  const resolutionFactor=s.modelSpec==='768P'?Math.pow(768/720,2):1,stepsFactor=s.videoEngine==='turbo4'?1:5;
- return{workloadType:'video',group:1,genSeconds:Math.round(seconds*resolutionFactor*stepsFactor/videoSpeed[g.id]),overheadSeconds:30,videoDuration:duration,success:95,availability:base.availability,utilization:base.utilization,scaling:95};
+ return{workloadType:'video',group:1,genSeconds:matchesDefaultVideo(s)?defaultState.genSeconds:Math.round(seconds*resolutionFactor*stepsFactor/videoSpeed[g.id]),overheadSeconds:30,videoDuration:duration,success:95,availability:base.availability,utilization:base.utilization,scaling:95};
 }
 export function capacityEvidence(s){
  const m=aiModel(s.aiModel);
+ if(m.kind==='video'&&matchesDefaultVideo(s))return `自定义默认：RTX 5090 32GB、MiniMax H3、768P、15秒视频，单副本生成耗时默认 ${defaultState.genSeconds} 秒/条。这是指定的预算值，不是公开实测；当前计算以输入框为准。30秒调度编码开销、95%成功率和95%集群效率另行计入。`;
  if(m.kind==='video')return `预算推算：基于社区 RTX 5090 的 H3 Turbo 四步热启动测试（720P / 15秒耗时375秒；480P / 15秒耗时117秒），768P按像素比例换算；20步按5倍耗时、2K按1080P的4倍工作量推算，其他显卡使用规划速度系数。选中的 ${m.name} 是销售对标产品，公开 H3-Base / Turbo 的部署、质量及性能不等同于这些 API 产品；2K还需额外链路。30秒任务开销、95%成功率及95%集群效率均为可编辑预算假设。`;
  if(m.weightGB)return `预算推算：${m.name} 权重约 ${m.weightGB}GB；显存预算额外预留25%，不足时增加副本卡数。官方参考配置为${m.id==='minimax-m3'?'8×B200 / 4×B300 / 8×H200':'4×B300'}。其余配置未核验可部署；默认TPS按原M2.5每卡规划吞吐量的50%折算，不是本模型实测，长上下文也必须重新压测。`;
  return '';

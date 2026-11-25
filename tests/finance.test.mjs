@@ -1,5 +1,5 @@
 import test from'node:test';import assert from'node:assert/strict';import{calculate}from'../src/calc.mjs';import{defaultState}from'../src/catalog.mjs';
-const base={...defaultState,scenario:'base',tps:1500,availability:98,utilization:53,inputPrice:1,outputPrice:4,rent:2000};
+const base={...defaultState,aiModel:'minimax-m25',workloadType:'text',modelSpec:'standard',group:8,scaling:100,scenario:'base',tps:1500,availability:98,utilization:53,inputPrice:1,outputPrice:4,rent:2000};
 test('历史64卡基准与手工算式一致，单位为百万Token',()=>{const c=calculate(base);assert.ok(Math.abs(c.revenue-1572460.6464)<.001);assert.ok(Math.abs(c.fixed-3000000)<.01);assert.ok(Math.abs(c.profit+1506162.38592)<.02);assert.equal(c.incomeTax,0);});
 test('满租费用不随销售利用率降低',()=>{const c=calculate({...base,utilization:0});assert.equal(c.revenue,0);assert.equal(c.rent,1536000);assert.equal(c.breakUtil,calculate(base).breakUtil);});
 test('整机按交付包取整，副本不足不虚增产能',()=>{const c=calculate({...base,gpu:9});assert.equal(c.billedCards,16);assert.equal(c.replicas,1);assert.equal(c.idle,1);assert.equal(c.rent,384000);});
