@@ -1,0 +1,12 @@
+import test from'node:test';import assert from'node:assert/strict';import{calculate}from'../src/calc.mjs';import{defaultState}from'../src/catalog.mjs';
+const base={...defaultState,scenario:'base',tps:1500,availability:98,utilization:53,inputPrice:1,outputPrice:4,rent:2000};
+test('历史64卡基准与手工算式一致，单位为百万Token',()=>{const c=calculate(base);assert.ok(Math.abs(c.revenue-1572460.6464)<.001);assert.ok(Math.abs(c.fixed-3000000)<.01);assert.ok(Math.abs(c.profit+1506162.38592)<.02);assert.equal(c.incomeTax,0);});
+test('满租费用不随销售利用率降低',()=>{const c=calculate({...base,utilization:0});assert.equal(c.revenue,0);assert.equal(c.rent,1536000);assert.equal(c.breakUtil,calculate(base).breakUtil);});
+test('整机按交付包取整，副本不足不虚增产能',()=>{const c=calculate({...base,gpu:9});assert.equal(c.billedCards,16);assert.equal(c.replicas,1);assert.equal(c.idle,1);assert.equal(c.rent,384000);});
+test('输入处理增加会降低集群输出TPS',()=>assert.ok(calculate({...base,ratio:16}).outputTPS<calculate(base).outputTPS));
+test('缓存只替代输入收入，不重复计算',()=>{const c=calculate({...base,cache:100,cachePrice:0.1});assert.equal(c.ordinaryRevenue,0);assert.equal(c.cached,c.input);assert.ok(Math.abs(c.revenue-(c.output/1e6*4+c.input/1e6*.1))<.001);});
+test('采购利润与现金分开，押金不算费用',()=>{const s={...base,mode:'buy',purchase:50000,purchasePack:8,extraHardware:100000,deposit:50000};const c=calculate(s);assert.equal(c.rent,0);assert.equal(c.capex,3300000);assert.ok(Math.abs(c.depreciation-990000)<.01);assert.ok(Math.abs(c.cash-(c.profit+c.depreciation-c.capex-50000))<.01);assert.equal(c.profit,calculate({...s,deposit:0}).profit);});
+test('亏损不计所得税，盈利按预算税率计提',()=>{assert.equal(calculate(base).incomeTax,0);const c=calculate({...base,inputPrice:20,outputPrice:40});assert.ok(c.pretax>0);assert.equal(c.incomeTax,c.pretax*.25);});
+test('价格缺失显式标记，不伪装成免费GPU',()=>assert.equal(calculate({...base,rent:null}).missingPrice,true));
+test('零产能或全额费用不输出Infinity',()=>{assert.equal(calculate({...base,gpu:1}).breakUtil,null);assert.equal(calculate({...base,fee:100}).breakUtil,null);});
+test('月/年时长采用365天一致口径',()=>assert.equal(calculate({...base,months:6}).revenue,calculate(base).revenue/2));

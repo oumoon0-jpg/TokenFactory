@@ -1,0 +1,10 @@
+node_modules/
+.local/
+tmp/
+dist/
+outputs/
+.env*
+.sites-runtime/
+.sites-checkout*
+pages-dist/
+.openai/

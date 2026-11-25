@@ -1,0 +1,2 @@
+import{localDB}from'./local-db.mjs';import{market}from'../src/storage.mjs';import{writeFileSync}from'node:fs';
+const db=localDB(),data=await market(db);db.close();if(!data.quotes.length)throw Error('没有历史报价，先执行 npm run refresh');const latest=data.runs[0]||{};writeFileSync('data/initial-market.json',JSON.stringify({...latest,quotes:data.quotes,schedule:data.schedule},null,2));console.log('Snapshot saved: '+data.quotes.length+' prices.');

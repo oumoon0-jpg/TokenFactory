@@ -1,0 +1,2 @@
+import test from'node:test';import assert from'node:assert/strict';import{readFileSync}from'node:fs';import{Script}from'node:vm';
+test('单文件HTML保留JS字符，脚本可解析且没有外部模块依赖',()=>{const h=readFileSync('outputs/Token工厂经营测算器.html','utf8');const scripts=[...h.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]);assert.equal(scripts.length,2);for(const s of scripts){assert.doesNotThrow(()=>new Script(s));assert.ok(!/^import /m.test(s));}assert.ok(!/<script[^>]*src=/.test(h));assert.ok(h.includes('window.__BOOT__'));});

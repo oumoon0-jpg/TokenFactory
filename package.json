@@ -1,0 +1,5 @@
+{
+  "name": "token-factory-cny", "version": "1.0.0", "private": true, "type": "module",
+  "scripts": {"dev":"node scripts/dev.mjs", "build":"node scripts/build.mjs", "test":"node --test tests/*.test.mjs", "refresh":"node scripts/refresh.mjs", "build:pages":"node scripts/build-pages.mjs", "refresh:actions":"node scripts/actions-refresh.mjs"},
+  "engines":{"node":">=24"}
+}

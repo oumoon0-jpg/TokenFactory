@@ -1,0 +1,85 @@
+name: Daily prices and GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 01:17 UTC = 09:17 Asia/Shanghai. Avoid the busy top of the hour.
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+    inputs:
+      refresh:
+        description: '采集最新价格（关闭则仅发布已有价格）'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: token-factory-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    outputs:
+      crawl_status: ${{ steps.refresh.outputs.status }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Test calculator and collectors
+        run: |
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+      - name: Collect public prices
+        id: refresh
+        if: github.event_name != 'workflow_dispatch' || inputs.refresh
+        run: node scripts/actions-refresh.mjs
+      - name: Persist daily price history
+        if: steps.refresh.outcome == 'success'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/initial-market.json data/actions-runs.json data/history
+          if ! git diff --cached --quiet; then
+            git commit -m "data: save daily CNY price observations"
+            git push origin HEAD:main
+          fi
+      - name: Build static site with history
+        run: node scripts/build-pages.mjs
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: pages-dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Flag a complete collection failure
+        if: needs.build.outputs.crawl_status == 'failed'
+        run: |
+          echo '全部来源采集失败。网页已保留上次价格并展示失败记录，请查看 build 的采集日志。'
+          exit 1

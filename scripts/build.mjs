@@ -1,0 +1,12 @@
+import{readFileSync,writeFileSync,mkdirSync,copyFileSync,existsSync}from'node:fs';
+const read=p=>readFileSync(p,'utf8');const seed=JSON.parse(read('data/initial-market.json'));
+const assets={};for(const [path,file,type]of [['/index.html','public/index.html','text/html; charset=utf-8'],['/style.css','public/style.css','text/css; charset=utf-8'],['/app.js','public/app.js','text/javascript; charset=utf-8'],['/catalog.mjs','src/catalog.mjs','text/javascript; charset=utf-8'],['/calc.mjs','src/calc.mjs','text/javascript; charset=utf-8'],['/price-policy.mjs','src/price-policy.mjs','text/javascript; charset=utf-8']])assets[path]={content:read(file),type};
+assets['/bootstrap.js']={content:'window.__BOOT__='+JSON.stringify(seed)+';',type:'text/javascript; charset=utf-8'};
+const strip=s=>s.replace(/^import[^\n]*\n/gm,'').replace(/\bexport (?=(?:async )?(?:function|const|class))/g,'');
+const worker=['src/purchase.mjs','src/collect.mjs','src/storage.mjs','src/worker.mjs'].map(p=>strip(read(p))).join('\n');
+mkdirSync('dist/server',{recursive:true});mkdirSync('dist/.openai',{recursive:true});
+writeFileSync('dist/server/index.js',`const ASSETS=${JSON.stringify(assets)};\nconst SEED=${JSON.stringify(seed)};\n${worker}\nexport default createWorker(ASSETS,SEED);\n`);if(existsSync('.openai/hosting.json'))copyFileSync('.openai/hosting.json','dist/.openai/hosting.json');
+mkdirSync('outputs',{recursive:true});const script=['src/catalog.mjs','src/calc.mjs','src/price-policy.mjs','public/app.js'].map(p=>strip(read(p))).join('\n');
+const safe=s=>s.replace(/<\/script/gi,'<\\/script');
+const offline=read('public/index.html').replace('<link rel="stylesheet" href="/style.css">',()=>`<style>${read('public/style.css')}</style>`).replace('<script src="/bootstrap.js"></script>',()=>`<script>window.__BOOT__=${JSON.stringify(seed).replace(/</g,'\\u003c')};</script>`).replace('<script type="module" src="/app.js"></script>',()=>`<script type="module">${safe(script)}</script>`);
+writeFileSync('outputs/Token工厂经营测算器.html',offline);console.log('Built Worker, assets, and standalone editable HTML. Quotes: '+seed.quotes.length);
