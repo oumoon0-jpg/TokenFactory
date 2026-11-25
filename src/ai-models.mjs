@@ -12,7 +12,7 @@ export const aiModels=[
  {id:'minimax-h3-max',name:'MiniMax H3 Max',api:'MiniMax-H3-Max',kind:'video',specs:[['768P','768P'],['480P','480P']],prices:{'768P':[.5,.97,.5],'480P':[.33,.37,.5]},freeImages:2,source:modelPricingUrl}
 ];
 export const aiModel=id=>aiModels.find(m=>m.id===id)||aiModels[0];
-export function modelDefaults(id,spec){const m=aiModel(id),p=m.prices[spec]||m.prices[m.specs[0][0]];return m.kind==='text'?{inputPrice:p[0],outputPrice:p[1],cachePrice:p[2],cache:0,saleDiscount:0}:{videoPrice:p[0],videoInputPrice:p[1],imagePrice:p[2],freeImages:m.freeImages,videoInputSeconds:0,referenceImages:0,saleDiscount:0,refund:0};}
+export function modelDefaults(id,spec){const m=aiModel(id),p=m.prices[spec]||m.prices[m.specs[0][0]];return m.kind==='text'?{inputPrice:p[0],outputPrice:p[1],cachePrice:p[2],cache:0,saleDiscount:0}:{videoPrice:.2,videoInputPrice:.2,imagePrice:p[2],freeImages:m.freeImages,videoInputSeconds:0,referenceImages:0,saleDiscount:0,refund:0};}
 // Multipliers are deliberately budget assumptions, not a GPU performance ranking.
 const videoSpeed={'rtx5090-32':1,'rtx4090-24':.65,'rtx5090d-32':.8,'rtx5090dv2-24':.7,'rtxpro6000-96':1.15,'rtxpro6000d-84':.95,'l20-48':.4,'l40s-48':.55,'l40-48':.5,'a100-40':.5,'a100-80':.55,'a800-80':.5,'h20-96':.5,'h20-141':.6,'h800-80':.85,'h100-80':.9,'h200-141':1.1,'b200-180':1.6,'b300-288':1.9};
 export function modelPreset(s){
