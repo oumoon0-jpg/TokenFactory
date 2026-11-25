@@ -1,5 +1,20 @@
 [
   {
+    "id": "2026-11-25T07:41:25.763Z",
+    "startedAt": "2026-11-25T07:41:25.763Z",
+    "finishedAt": "2026-11-25T07:41:25.763Z",
+    "status": "success",
+    "sources": [
+      {
+        "source": "minimax-official",
+        "name": "MiniMax 开放平台 · 人民币按量价",
+        "status": "success",
+        "count": 11,
+        "observedAt": "2026-11-25T07:41:25.763Z"
+      }
+    ]
+  },
+  {
     "id": "2026-11-25T03:51:57.622Z",
     "startedAt": "2026-11-25T03:51:57.622Z",
     "finishedAt": "2026-11-25T03:52:05.893Z",

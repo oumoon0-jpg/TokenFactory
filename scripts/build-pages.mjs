@@ -13,7 +13,7 @@ export async function buildPages({projectDir=process.cwd(),outputDir=join(projec
  const market={quotes:mergeQuotes([],seed.quotes),runs,schedule,serverTime:seed.finishedAt,hosting:{type:'github-pages',repository,builtAt:new Date().toISOString()}};
  const read=p=>readFile(join(projectDir,p),'utf8');
  const strip=s=>s.replace(/^import[^\n]*\n/gm,'').replace(/\bexport (?=(?:async )?(?:function|const|class))/g,'');
- const script=(await Promise.all(['src/catalog.mjs','src/calc.mjs','src/price-policy.mjs','public/app.js'].map(read))).map(strip).join('\n').replace(/<\/script/gi,'<\\/script');
+ const script=(await Promise.all(['src/catalog.mjs','src/ai-models.mjs','src/calc.mjs','src/price-policy.mjs','public/app.js'].map(read))).map(strip).join('\n').replace(/<\/script/gi,'<\\/script');
  const css=await read('public/style.css');
  const html=(await read('public/index.html')).replace('<link rel="stylesheet" href="/style.css">',()=>`<style>${css}</style>`).replace('<script src="/bootstrap.js"></script>',()=>`<script>window.__BOOT__=${JSON.stringify(market).replace(/</g,'\\u003c')};</script>`).replace('<script type="module" src="/app.js"></script>',()=>`<script type="module">${script}</script>`);
  await mkdir(join(outputDir,'data/history'),{recursive:true});await writeFile(join(outputDir,'index.html'),html);await writeFile(join(outputDir,'.nojekyll'),'');await writeFile(join(outputDir,'data/market.json'),JSON.stringify(market));

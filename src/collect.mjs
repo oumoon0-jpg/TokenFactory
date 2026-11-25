@@ -1,5 +1,7 @@
 import {purchaseSources,parsePurchase} from './purchase.mjs';
+import {minimaxPriceSource,parseMiniMaxPrices} from './model-prices.mjs';
 export const sources=[
+ minimaxPriceSource,
  {id:'gongji',name:'共绩算力',url:'https://suanli.cn/price/',kind:'rent'},
  {id:'apetops',name:'猿界算力',url:'https://www.apetops.com/index.html',kind:'rent'},
  {id:'qxlc-659',name:'全芯联储 · 5090八卡整机',url:'https://www.qxlc.chat/product/659',kind:'buy'},
@@ -34,6 +36,7 @@ export function modelId(name,mem=''){
 function quote(src,at,data){return {source:src.id,provider:src.name,url:src.url,day:cnDay(new Date(at)),observedAt:at,publishedAt:null,currency:'CNY',region:'中国大陆供应商；实际节点待确认',tax:'含税与否未说明',eligible:true,notes:'公开挂牌；库存、全年锁价及批量折扣未确认。',...data};}
 function normalized(price,cards,unit){return unit==='server_30day'?price/cards*365/360:unit==='gpu_hour'?price*365*24/12:price/cards;}
 export function parseSource(src,html,at=new Date().toISOString()){
+ if(src.id===minimaxPriceSource.id)return parseMiniMaxPrices(src,html,at);
  if(purchaseSources.some(s=>s.id===src.id))return parsePurchase(src,html,at,{clean,modelId,quote,rows});
  const result=[];
  if(src.id==='gongji'){
